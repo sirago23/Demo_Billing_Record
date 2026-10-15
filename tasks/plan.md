@@ -41,7 +41,7 @@ Details, acceptance criteria and verification for each task are in `tasks/todo.m
 
 ### Phase 1: Foundation (~45 min)
 - [x] Task 1: Scaffold the project and tooling
-- [ ] Task 2: Data layer (schema, migration, categories, validation, money helpers)
+- [x] Task 2: Data layer (schema, migration, categories, validation, money helpers)
 - [ ] Task 3: Manual entry slice
 
 ### Checkpoint A: Foundation

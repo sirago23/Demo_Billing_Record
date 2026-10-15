@@ -30,13 +30,13 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 **Description:** Drizzle schema for `records` (SPEC "Data model"), DB client reading `DATABASE_PATH`, first migration, preset categories, Zod schemas for record input and Claude output, and baht↔satang helpers.
 
 **Acceptance criteria:**
-- [ ] `npm run db:migrate` creates `data/billing.db` with the `records` table
-- [ ] Record input schema rejects amount ≤ 0, more than 2 decimals, impossible dates (`2026-02-30`), and a category that does not match the type
-- [ ] Claude output schema accepts valid JSON, JSON wrapped in extra text, and converts BE years (2569 → 2026); rejects unknown categories
+- [x] `npm run db:migrate` creates `data/billing.db` with the `records` table
+- [x] Record input schema rejects amount ≤ 0, more than 2 decimals, impossible dates (`2026-02-30`), and a category that does not match the type
+- [x] Claude output schema accepts valid JSON, JSON wrapped in extra text, and converts BE years (2569 → 2026); rejects unknown categories
 
 **Verification:**
-- [ ] Checks pass, with `tests/validation.test.ts` and `tests/money.test.ts` covering the cases above
-- [ ] Manual: open the DB file and see the table
+- [x] Checks pass, with `tests/validation.test.ts` and `tests/money.test.ts` covering the cases above
+- [x] Manual: open the DB file and see the table
 
 **Dependencies:** Task 1
 
