@@ -49,13 +49,13 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 **Description:** `POST /api/records` validates with Zod and inserts. The shared `RecordForm` (type, amount, date default today, category filtered by type, merchant, note) is used on `/records/new`.
 
 **Acceptance criteria:**
-- [ ] Saving a valid manual record inserts one row with `source = manual` and amount in satang
-- [ ] Invalid input shows a visible error in the form and the API returns 400 `{ error }`
-- [ ] Changing the type changes the category options
+- [x] Saving a valid manual record inserts one row with `source = manual` and amount in satang
+- [x] Invalid input shows a visible error in the form and the API returns 400 `{ error }`
+- [x] Changing the type changes the category options
 
 **Verification:**
-- [ ] Checks pass
-- [ ] Manual: add ฿125.50 Food & Drink in the browser, then confirm the row in SQLite (12550 satang)
+- [x] Checks pass
+- [x] Manual: add ฿125.50 Food & Drink in the browser, then confirm the row in SQLite (12550 satang)
 
 **Dependencies:** Task 2
 
