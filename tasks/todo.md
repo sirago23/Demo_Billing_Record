@@ -160,11 +160,11 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 **Acceptance criteria:**
 - [x] `npm run db:seed` fills the current and previous month with income and expenses in several categories
 - [x] `npm run test:e2e` passes without calling Claude
-- [ ] Demo check: Thai bank slip and receipt pre-fill correctly; an unreadable image shows the "fill in manually" message
+- [x] Demo check: Thai bank slip and receipt pre-fill correctly; an unreadable image shows the "fill in manually" message
 
 **Verification:**
 - [x] Checks and `npm run test:e2e` pass
-- [ ] Manual (spends credits, ask first): the 3-image demo check
+- [x] Manual (spends credits, ask first): the 3-image demo check
 
 **Dependencies:** Task 7
 

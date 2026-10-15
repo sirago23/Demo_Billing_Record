@@ -57,7 +57,7 @@ Details, acceptance criteria and verification for each task are in `tasks/todo.m
 
 ### Phase 3: Protect and finish (~40 min)
 - [x] Task 7: Password login
-- [ ] Task 8: Seed data, E2E smoke test, demo check
+- [x] Task 8: Seed data, E2E smoke test, demo check
 
 ### Checkpoint C: Complete
 - [ ] All SPEC success criteria met, ready for demo
