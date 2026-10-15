@@ -1,0 +1,14 @@
+# secrets
+.env
+.env.*
+!.env.example
+credentials.json
+token.json
+
+# local / generated
+.tmp/
+session-handoff/
+node_modules/
+data/
+.next/
+.playwright-mcp/

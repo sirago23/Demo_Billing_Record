@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<title>Billing record</title>
+<style>
+:root {
+  --bg: #f6f6f3;
+  --surface: #ffffff;
+  --text: #1d1d1b;
+  --muted: #5a5a55;
+  --line: #d9d9d2;
+  --accent: #2c5a88;
+  --accent-text: #ffffff;
+  --fs-title: clamp(1.5rem, 1rem + 1.5vw, 2.75rem);
+  --fs-body: clamp(1rem, 0.85rem + 0.44vw, 1.375rem);
+  --fs-small: clamp(0.875rem, 0.8rem + 0.15vw, 1.125rem);
+  --gap: clamp(16px, 1.2vw, 24px);
+  --pad: clamp(16px, 2.5vw, 48px);
+  --radius: 6px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131315;
+    --surface: #1c1c1f;
+    --text: #ececea;
+    --muted: #a6a6a0;
+    --line: #35353b;
+    --accent: #8fb6e3;
+    --accent-text: #101012;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #131315;
+  --surface: #1c1c1f;
+  --text: #ececea;
+  --muted: #a6a6a0;
+  --line: #35353b;
+  --accent: #8fb6e3;
+  --accent-text: #101012;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  margin: 0 0 var(--gap);
+}
+
+h1,
+h2 {
+  font-size: var(--fs-title);
+}
+
+h3 {
+  font-size: var(--fs-body);
+}
+
+p {
+  margin: 0 0 var(--gap);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px var(--gap);
+  padding: 10px var(--gap);
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--fs-small);
+}
+
+.bar .count {
+  color: var(--muted);
+}
+
+.bar .nav {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  font: inherit;
+  font-size: var(--fs-small);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  min-height: 36px;
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: var(--accent);
+}
+
+.bar .nav {
+  align-items: center;
+}
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+  border: 0;
+  background: transparent;
+}
+
+html:not(.js) .switch {
+  display: none;
+}
+
+.switch-track {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: var(--muted);
+  transition: background 0.15s;
+}
+
+.switch-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--surface);
+  transition: transform 0.15s;
+}
+
+.switch[aria-checked="true"] .switch-track {
+  background: var(--accent);
+}
+
+.switch[aria-checked="true"] .switch-knob {
+  transform: translateX(20px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .switch-track,
+  .switch-knob {
+    transition: none;
+  }
+}
+
+.toc {
+  position: relative;
+}
+
+.toc summary {
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.toc ol {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 6;
+  margin: 4px 0 0;
+  padding: 8px 8px 8px 32px;
+  width: min(320px, calc(100vw - 2 * var(--gap)));
+  max-height: 70vh;
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.toc a {
+  display: block;
+  padding: 4px 0;
+  color: var(--accent);
+}
+
+#deck {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--gap);
+}
+
+.slide {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px var(--pad);
+  margin-bottom: 0;
+  scroll-margin-top: 80px;
+}
+
+@media (min-width: 720px) {
+  .js .slide.active {
+    min-height: calc(100vh - 120px);
+  }
+}
+
+.js .slide:not(.active) {
+  display: none;
+}
+
+.src {
+  margin: var(--gap) 0 0;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+th.src,
+td.src {
+  margin: 0;
+  width: 14%;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--muted);
+  opacity: 0.85;
+  overflow-wrap: anywhere;
+}
+
+td.path {
+  min-width: 7em;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 719px) {
+  #deck {
+    padding: 8px;
+  }
+
+  .slide {
+    padding: 20px 12px;
+  }
+
+  th,
+  td {
+    padding: 6px 4px;
+  }
+
+  th.src,
+  td.src {
+    width: 22%;
+    min-width: 5.5em;
+    font-size: 0.6875rem;
+  }
+}
+
+.card h3 {
+  margin-bottom: 8px;
+}
+
+.card ul {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+@media (min-width: 720px) {
+  .steps {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--gap);
+  padding-top: calc(var(--gap) + 18px);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--accent);
+  border-radius: var(--radius);
+  counter-increment: step;
+}
+
+.step::before {
+  content: "Step " counter(step);
+  position: absolute;
+  top: 6px;
+  left: var(--gap);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.step .src {
+  margin: 0;
+}
+
+table + h3 {
+  margin-top: calc(var(--gap) * 1.5);
+}
+
+td ul {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.impact {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.impact-high {
+  color: #b3261e;
+}
+
+.impact-med {
+  color: #8a5a00;
+}
+
+.impact-low {
+  color: #2d6a3a;
+}
+
+:root[data-theme="dark"] .impact-high {
+  color: #ff9a92;
+}
+
+:root[data-theme="dark"] .impact-med {
+  color: #f0c36a;
+}
+
+:root[data-theme="dark"] .impact-low {
+  color: #8fd19e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .impact-high {
+    color: #ff9a92;
+  }
+
+  :root:not([data-theme="light"]) .impact-med {
+    color: #f0c36a;
+  }
+
+  :root:not([data-theme="light"]) .impact-low {
+    color: #8fd19e;
+  }
+}
+
+.wireframes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap);
+}
+
+@media (min-width: 720px) {
+  .wireframes {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.wireframe {
+  margin: 0;
+}
+
+.wireframe figcaption {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.wf-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 2px dashed var(--muted);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--line) 35%, transparent);
+  font-size: var(--fs-small);
+}
+
+.wf-note {
+  margin: 8px 0 0;
+  font-size: var(--fs-small);
+  font-style: italic;
+  color: var(--muted);
+}
+
+.wf-block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--muted);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.wf-header {
+  font-weight: 700;
+  background: var(--line);
+}
+
+.wf-button {
+  justify-content: center;
+  align-self: flex-start;
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.wf-image {
+  min-height: 90px;
+  align-items: center;
+  justify-content: center;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--surface),
+    var(--surface) 10px,
+    var(--line) 10px,
+    var(--line) 11px
+  );
+}
+
+.wf-item {
+  flex: 1 1 5em;
+  padding: 8px;
+  border: 1px solid var(--muted);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.wf-field {
+  flex: 1 1 100%;
+  padding: 8px;
+  border: 1px solid var(--muted);
+  border-radius: 4px;
+  color: var(--muted);
+}
+
+.wf-caption {
+  flex: 1 1 100%;
+  font-weight: 600;
+}
+
+.wf-line {
+  flex: 1 1 100%;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--line);
+}
+
+.wf-bars {
+  display: flex;
+  flex: 1 1 100%;
+  align-items: flex-end;
+  gap: 6px;
+  height: 70px;
+}
+
+.wf-bars i {
+  flex: 1;
+  background: var(--muted);
+  border-radius: 2px 2px 0 0;
+}
+
+.design {
+  margin: 0;
+}
+
+.design img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+}
+
+.design figcaption {
+  margin-top: 8px;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+.diagram .mermaid {
+  margin: 0;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.diagram .mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+html:not(.js) .diagram .mermaid,
+.js .diagram:not([data-state]) .mermaid,
+.js .diagram[data-state="failed"] .mermaid,
+.diagram .mermaid-print {
+  display: none;
+}
+
+.js .diagram:not([data-state])::before {
+  content: "Drawing the diagram...";
+  display: block;
+  color: var(--muted);
+}
+
+html:not(.js) .diagram-fallback[hidden] {
+  display: block;
+}
+
+.tagline {
+  color: var(--muted);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap);
+}
+
+@media (min-width: 720px) {
+  .slide {
+    padding: calc(var(--pad) * 0.75) var(--pad);
+  }
+
+  .cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--gap);
+}
+
+.card .id {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.card p {
+  margin-bottom: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  overflow-wrap: break-word;
+}
+
+tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--line) 25%, transparent);
+}
+
+table.grouped tbody tr:nth-child(even) {
+  background: none;
+}
+
+table.grouped tr.group-start td {
+  border-top: 2px solid var(--line);
+}
+
+table.grouped td[rowspan] {
+  min-width: 6em;
+  font-weight: 600;
+}
+
+.checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.checks li {
+  padding: 6px 0;
+}
+
+.checks label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.checks input {
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  flex: none;
+  accent-color: var(--accent);
+}
+
+@media print {
+  /* Print is always light, whatever theme the screen is in. */
+  :root,
+  :root[data-theme="dark"],
+  :root:not([data-theme="light"]) {
+    --bg: #fff;
+    --surface: #fff;
+    --text: #000;
+    --muted: #444;
+    --line: #bbb;
+    --accent: #1f4a75;
+    --accent-text: #fff;
+  }
+
+  .impact-high,
+  :root[data-theme="dark"] .impact-high,
+  :root:not([data-theme="light"]) .impact-high {
+    color: #b3261e;
+  }
+
+  .impact-med,
+  :root[data-theme="dark"] .impact-med,
+  :root:not([data-theme="light"]) .impact-med {
+    color: #8a5a00;
+  }
+
+  .impact-low,
+  :root[data-theme="dark"] .impact-low,
+  :root:not([data-theme="light"]) .impact-low {
+    color: #2d6a3a;
+  }
+
+  .diagram .mermaid {
+    display: none !important;
+  }
+
+  .diagram[data-state="drawn"] .mermaid-print {
+    display: block;
+    text-align: center;
+  }
+
+  .mermaid-print svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .bar {
+    display: none;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  #deck {
+    max-width: none;
+    padding: 0;
+  }
+
+  .js .slide:not(.active),
+  .slide {
+    display: block;
+    border: 0;
+    break-after: page;
+    page-break-after: always;
+  }
+}
+
+</style>
+</head>
+<body>
+<header class="bar">
+  <details class="toc">
+    <summary>Contents</summary>
+    <ol>
+      <li><a href="#s-title">Overview</a></li>
+      <li><a href="#s-goal">The goal</a></li>
+      <li><a href="#s-architecture">What each part needs first (simplified)</a></li>
+      <li><a href="#s-phases">Delivery phases</a></li>
+      <li><a href="#s-tasks">Tasks by phase</a></li>
+      <li><a href="#s-tasks-2">Tasks by phase (continued)</a></li>
+      <li><a href="#s-checkpoints">Checkpoints you approve</a></li>
+      <li><a href="#s-risks">Risks and how they are handled</a></li>
+      <li><a href="#s-decisions">Decisions already made</a></li>
+      <li><a href="#s-notes">Working in parallel</a></li>
+      <li><a href="#s-check">Please check</a></li>
+    </ol>
+  </details>
+  <span class="count" id="count" aria-live="polite"></span>
+  <div class="nav">
+    <button type="button" id="prev">Previous</button>
+    <button type="button" id="next">Next</button>
+    <button type="button" id="theme" class="switch" role="switch" aria-checked="false">
+      <span class="switch-label">Dark mode</span>
+      <span class="switch-track" aria-hidden="true"><span class="switch-knob"></span></span>
+    </button>
+  </div>
+</header>
+<main id="deck">
+<section class="slide" id="s-title"><h1>Billing record</h1><p class="tagline">How the prototype will be built: 8 steps in 3 phases, with 3 review points.</p><p>Plan for review · 2026-10-15</p><h3>This summary covers</h3><table><thead><tr><th>File</th><th>Last changed</th><th>Contains</th></tr></thead><tbody><tr><td class="path">tasks/plan.md</td><td>2026-10-15</td><td>overview, decisions, diagram, phases, risks, open questions</td></tr><tr><td class="path">tasks/todo.md</td><td>2026-10-15</td><td>tasks, checkpoints</td></tr></tbody></table></section>
+<section class="slide" id="s-goal"><h2>The goal</h2><p>Build the prototype from the spec: a web app for one person that records income and spending in Thai baht.</p><p>It reads bank slips and receipts with Claude into a form you check before saving, lists records by month and shows pie charts by category.</p><p>A password protects it so it can go online later. Target build time: 2-3 hours.</p><p class="src">Source: tasks/plan.md &gt; Overview</p></section>
+<section class="slide" id="s-architecture"><h2>What each part needs first (simplified)</h2><div class="diagram"><pre class="mermaid">flowchart TB
+  n_setup[&quot;Project setup&quot;]
+  n_data[&quot;Your records store&quot;]
+  n_manual[&quot;Add a record by hand&quot;]
+  n_slip[&quot;Read a slip&quot;]
+  n_list[&quot;Records list&quot;]
+  n_dash[&quot;Dashboard and pie charts&quot;]
+  n_seed[&quot;Demo data&quot;]
+  n_login[&quot;Password login&quot;]
+  n_e2e[&quot;End-to-end check&quot;]
+  n_setup --&gt; n_data
+  n_data --&gt; n_manual
+  n_data --&gt; n_seed
+  n_manual --&gt; n_slip
+  n_manual --&gt; n_list
+  n_list --&gt; n_dash
+  n_dash --&gt; n_login
+  n_login --&gt; n_e2e</pre><div class="mermaid-print" aria-hidden="true"></div><div class="diagram-fallback" hidden><p>The picture could not be drawn here. The same information as a list:</p><p>Parts: Project setup, Your records store, Add a record by hand, Read a slip, Records list, Dashboard and pie charts, Demo data, Password login, End-to-end check</p><table><thead><tr><th>From</th><th>To</th><th>What happens</th></tr></thead><tbody><tr><td>Project setup</td><td>Your records store</td><td></td></tr><tr><td>Your records store</td><td>Add a record by hand</td><td></td></tr><tr><td>Your records store</td><td>Demo data</td><td></td></tr><tr><td>Add a record by hand</td><td>Read a slip</td><td></td></tr><tr><td>Add a record by hand</td><td>Records list</td><td></td></tr><tr><td>Records list</td><td>Dashboard and pie charts</td><td></td></tr><tr><td>Dashboard and pie charts</td><td>Password login</td><td></td></tr><tr><td>Password login</td><td>End-to-end check</td><td></td></tr></tbody></table></div></div><p class="src">Source: tasks/plan.md &gt; Dependency Graph</p></section>
+<section class="slide" id="s-phases"><h2>Delivery phases</h2><ol class="steps"><li class="step"><strong>Foundation (about 45 minutes)</strong><span>Set up the project and the records store, and save a first record typed by hand.</span><span class="src">Source: tasks/plan.md &gt; Phase 1: Foundation (~45 min)</span></li><li class="step"><strong>Core features (about 75 minutes)</strong><span>Read slips with Claude, list and edit records, and show the dashboard.</span><span class="src">Source: tasks/plan.md &gt; Phase 2: Core features (~75 min)</span></li><li class="step"><strong>Protect and finish (about 40 minutes)</strong><span>Add the password, demo data and a final end-to-end check.</span><span class="src">Source: tasks/plan.md &gt; Phase 3: Protect and finish (~40 min)</span></li></ol></section>
+<section class="slide" id="s-tasks"><h2>Tasks by phase</h2><h3>Foundation (about 45 minutes)</h3><table><thead><tr><th>Task</th><th>What you will see working</th><th class="src">Source</th></tr></thead><tbody><tr><td>Set up the project and tools</td><td>A placeholder page opens in the browser, and the automatic checks run.</td><td class="src">tasks/todo.md &gt; Task 1: Scaffold the project and tooling</td></tr><tr><td>Records store, categories and input checking</td><td>The database file is created; checks reject a zero amount, an impossible date like 30 February and a wrong category, and turn year 2569 into 2026.</td><td class="src">tasks/todo.md &gt; Task 2: Data layer</td></tr><tr><td>Add a record by hand</td><td>You add ฿125.50 Food &amp; Drink in the browser and it is saved; wrong input shows an error; categories change with the type.</td><td class="src">tasks/todo.md &gt; Task 3: Manual entry slice</td></tr></tbody></table><h3>Core features (about 75 minutes)</h3><table><thead><tr><th>Task</th><th>What you will see working</th><th class="src">Source</th></tr></thead><tbody><tr><td>Read a slip or receipt</td><td>You upload a slip and the form fills in; nothing saves until you press Save; wrong files or unreadable images show a clear message; a low-confidence read shows &quot;Please check these values&quot;.</td><td class="src">tasks/todo.md &gt; Task 4: Slip extraction slice</td></tr><tr><td>Records list</td><td>A table for the chosen month, newest first, in ฿1,234.50 format; you can edit a record and delete one after confirming.</td><td class="src">tasks/todo.md &gt; Task 5: Records list slice</td></tr><tr><td>Dashboard</td><td>Income, expense and balance cards and two pie charts that match the list; an empty month shows &quot;No data for this month&quot;.</td><td class="src">tasks/todo.md &gt; Task 6: Dashboard slice</td></tr></tbody></table></section>
+<section class="slide" id="s-tasks-2"><h2>Tasks by phase (continued)</h2><h3>Protect and finish (about 40 minutes)</h3><table><thead><tr><th>Task</th><th>What you will see working</th><th class="src">Source</th></tr></thead><tbody><tr><td>Password login</td><td>Without logging in you are sent to the login page; a wrong password shows &quot;Wrong password&quot;; Log out ends the session.</td><td class="src">tasks/todo.md &gt; Task 7: Password login</td></tr><tr><td>Demo data, end-to-end test and demo check</td><td>Two months of demo records; one automatic test that logs in, adds an expense and finds it on the dashboard; a real Thai slip and a receipt read correctly and an unreadable image asks you to fill in by hand.</td><td class="src">tasks/todo.md &gt; Task 8: Seed data, E2E smoke test, demo check</td></tr></tbody></table></section>
+<section class="slide" id="s-checkpoints"><h2>Checkpoints you approve</h2><table><thead><tr><th>Checkpoint</th><th>You check</th><th class="src">Source</th></tr></thead><tbody><tr><td><strong>Checkpoint A: Foundation</strong><br>P1</td><td><ul><li>Automatic checks pass and the app builds.</li><li>A record typed by hand is saved correctly.</li><li>You review before Phase 2 starts.</li></ul></td><td class="src">tasks/todo.md &gt; Checkpoint A: Foundation</td></tr><tr><td><strong>Checkpoint B: Core flow</strong><br>P2</td><td><ul><li>Automatic checks pass and the app builds.</li><li>Upload a slip, check it, save it, see it in the list and in the pie chart.</li><li>You review before Phase 3 starts.</li></ul></td><td class="src">tasks/todo.md &gt; Checkpoint B: Core flow</td></tr><tr><td><strong>Checkpoint C: Complete</strong><br>P3</td><td><ul><li>Every success point in the spec is checked and reported.</li><li>All automatic checks, the build and the end-to-end test pass.</li><li>Nothing private is about to be uploaded.</li><li>Ready for the demo.</li></ul></td><td class="src">tasks/todo.md &gt; Checkpoint C: Complete</td></tr></tbody></table></section>
+<section class="slide" id="s-risks"><h2>Risks and how they are handled</h2><table><thead><tr><th>Risk</th><th>Impact</th><th>Handled by</th><th class="src">Source</th></tr></thead><tbody><tr><td>Claude misreads a Thai slip (amount, Buddhist-era year, income or expense).</td><td><span class="impact impact-high">High</span></td><td>You always check before saving; a warning shows when it is unsure; the year conversion is tested; one real slip is tried early in step 4.</td><td class="src">tasks/plan.md &gt; Risks and Mitigations</td></tr><tr><td>The database tool will not install on Windows with this version of Node.</td><td><span class="impact impact-med">Med</span></td><td>Use a long-term-support version of Node and check it in step 1, before building on it.</td><td class="src">tasks/plan.md &gt; Risks and Mitigations</td></tr><tr><td>The login check runs in a place where the usual signing tool is not available.</td><td><span class="impact impact-med">Med</span></td><td>Use the web&#x27;s built-in signing tool, which works in both places.</td><td class="src">tasks/plan.md &gt; Risks and Mitigations</td></tr><tr><td>Reading a slip takes longer than 15 seconds or fails.</td><td><span class="impact impact-med">Med</span></td><td>Shrink the photo first, stop waiting after 30 seconds and fall back to an empty form.</td><td class="src">tasks/plan.md &gt; Risks and Mitigations</td></tr><tr><td>The build runs over the 2-3 hour budget.</td><td><span class="impact impact-med">Med</span></td><td>Keep polish small. If late, cut in this order: the low-confidence warning, then editing (deleting stays), then the end-to-end test.</td><td class="src">tasks/plan.md &gt; Risks and Mitigations</td></tr><tr><td>Secrets are uploaded to the public repository.</td><td><span class="impact impact-high">High</span></td><td>The ignore list is set up in step 1 before anything is saved to history, and files are checked before every upload.</td><td class="src">tasks/plan.md &gt; Risks and Mitigations</td></tr></tbody></table></section>
+<section class="slide" id="s-decisions"><h2>Decisions already made</h2><table><thead><tr><th>Decision</th><th class="src">Source</th></tr></thead><tbody><tr><td>One app holds both the screens and the behind-the-scenes parts; there is no separate server program.</td><td class="src">tasks/plan.md &gt; Architecture Decisions</td></tr><tr><td>Records are kept in SQLite (a database stored in one file on your computer). No database server is needed.</td><td class="src">tasks/plan.md &gt; Architecture Decisions</td></tr><tr><td>Money is kept as whole satang (baht times 100) so totals never drift from rounding.</td><td class="src">tasks/plan.md &gt; Architecture Decisions</td></tr><tr><td>Reading a slip never saves anything. Only the form&#x27;s Save button saves, so you always check first.</td><td class="src">tasks/plan.md &gt; Architecture Decisions</td></tr><tr><td>One form is shared for typing by hand, checking a read slip and editing.</td><td class="src">tasks/plan.md &gt; Architecture Decisions</td></tr><tr><td>Automatic checks use a pretend AI, so they never spend Claude credits.</td><td class="src">tasks/plan.md &gt; Architecture Decisions</td></tr><tr><td>The password login is built last: it would slow down building and is low risk.</td><td class="src">tasks/plan.md &gt; Architecture Decisions</td></tr><tr><td>Claude is asked to answer only with structured data; anything it cannot answer cleanly opens an empty form to fill in by hand.</td><td class="src">tasks/plan.md &gt; Architecture Decisions</td></tr></tbody></table></section>
+<section class="slide" id="s-notes"><h2>Working in parallel</h2><p>At this size it is not worth splitting the work; one session builds the steps in order. Reading slips and the records list do not depend on each other and could run side by side if needed.</p><p class="src">Source: tasks/plan.md &gt; Parallelization</p></section>
+<section class="slide" id="s-check"><h2>Please check</h2><p>Tick each item once you have checked it. Ticks are saved in this browser only.</p><ul class="checks"><li><label><input type="checkbox" data-key="exec-summary:018d49aec8:6e7af9117c"><span>The goal describes what I want.</span></label></li><li><label><input type="checkbox" data-key="exec-summary:018d49aec8:21929c6bf4"><span>Checkpoint A: Foundation: Automatic checks pass and the app builds.; A record typed by hand is saved correctly.; You review before Phase 2 starts.</span></label></li><li><label><input type="checkbox" data-key="exec-summary:018d49aec8:f51fc1eee8"><span>Checkpoint B: Core flow: Automatic checks pass and the app builds.; Upload a slip, check it, save it, see it in the list and in the pie chart.; You review before Phase 3 starts.</span></label></li><li><label><input type="checkbox" data-key="exec-summary:018d49aec8:c1c35d296b"><span>Checkpoint C: Complete: Every success point in the spec is checked and reported.; All automatic checks, the build and the end-to-end test pass.; Nothing private is about to be uploaded.; Ready for the demo.</span></label></li><li><label><input type="checkbox" data-key="exec-summary:018d49aec8:7dc6808e41"><span>Open question: Should the original slip images be kept for viewing later?</span></label></li><li><label><input type="checkbox" data-key="exec-summary:018d49aec8:a5a9b5d96a"><span>Open question: Should slips be read with claude-sonnet-5-5 (the plan&#x27;s default) or claude-opus-5-5?</span></label></li><li><label><input type="checkbox" data-key="exec-summary:018d49aec8:775a36a690"><span>Open question: Should a project history (git) be started in step 1, and is there a GitHub repository to upload to? Uploading will always be asked first.</span></label></li><li><label><input type="checkbox" data-key="exec-summary:018d49aec8:28e52b3a32"><span>Open question: Is it OK to spend Claude credits on 1 real slip in step 4 and 3 real images in step 8?</span></label></li></ul></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js" integrity="sha384-rbtjAdnIQE/aQJGEgXrVUlMibdfTSa4PQju4HDhN3sR2PmaKFzhEafuePsl9H/9I" crossorigin="anonymous" defer></script>
+<script>
+(function () {
+  var root = document.documentElement;
+  root.className += " js";
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var count = document.getElementById("count");
+  var toc = document.querySelector(".toc");
+  var current = 0;
+
+  function read(key) {
+    try {
+      return window.localStorage.getItem(key);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function write(key, value) {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch (e) {
+      /* storage can be blocked; the deck still works without it */
+    }
+  }
+
+  function show(index) {
+    if (!slides.length) {
+      return;
+    }
+    current = Math.max(0, Math.min(slides.length - 1, index));
+    slides.forEach(function (slide, i) {
+      slide.classList.toggle("active", i === current);
+    });
+    count.textContent = "Slide " + (current + 1) + " of " + slides.length;
+    document.getElementById("prev").disabled = current === 0;
+    document.getElementById("next").disabled = current === slides.length - 1;
+    window.scrollTo(0, 0);
+  }
+
+  function showFromHash() {
+    var id = window.location.hash.replace("#", "");
+    for (var i = 0; i < slides.length; i++) {
+      if (slides[i].id === id) {
+        show(i);
+        return;
+      }
+    }
+    show(0);
+  }
+
+  document.getElementById("prev").addEventListener("click", function () {
+    show(current - 1);
+  });
+  document.getElementById("next").addEventListener("click", function () {
+    show(current + 1);
+  });
+
+  toc.addEventListener("click", function (event) {
+    if (event.target.tagName === "A") {
+      toc.removeAttribute("open");
+    }
+  });
+
+  window.addEventListener("hashchange", showFromHash);
+
+  document.addEventListener("keydown", function (event) {
+    var target = event.target;
+    var isTyping =
+      target.tagName === "TEXTAREA" ||
+      target.isContentEditable ||
+      (target.tagName === "INPUT" && target.type !== "checkbox");
+    if (isTyping || event.altKey || event.ctrlKey || event.metaKey) {
+      return;
+    }
+    if (event.key === "ArrowRight" || event.key === "PageDown") {
+      show(current + 1);
+    } else if (event.key === "ArrowLeft" || event.key === "PageUp") {
+      show(current - 1);
+    } else if (event.key === "Home") {
+      show(0);
+    } else if (event.key === "End") {
+      show(slides.length - 1);
+    }
+  });
+
+  var themeKey = "exec-summary:theme";
+  var savedTheme = read(themeKey);
+  if (savedTheme === "light" || savedTheme === "dark") {
+    root.setAttribute("data-theme", savedTheme);
+  }
+  var themeSwitch = document.getElementById("theme");
+  var systemQuery = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+
+  function isDark() {
+    var explicit = root.getAttribute("data-theme");
+    return explicit ? explicit === "dark" : !!(systemQuery && systemQuery.matches);
+  }
+
+  function syncSwitch() {
+    themeSwitch.setAttribute("aria-checked", isDark() ? "true" : "false");
+  }
+
+  themeSwitch.addEventListener("click", function () {
+    var next = isDark() ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    write(themeKey, next);
+    syncSwitch();
+    drawDiagrams();
+  });
+  if (systemQuery && systemQuery.addEventListener) {
+    systemQuery.addEventListener("change", function () {
+      syncSwitch();
+      drawDiagrams();
+    });
+  }
+  syncSwitch();
+
+  var boxes = document.querySelectorAll("input[data-key]");
+  Array.prototype.forEach.call(boxes, function (box) {
+    box.checked = read(box.getAttribute("data-key")) === "1";
+    box.addEventListener("change", function () {
+      write(box.getAttribute("data-key"), box.checked ? "1" : "0");
+    });
+  });
+
+  var drawCount = 0;
+  var DRAW_TIMEOUT = 8000;
+
+  /* A diagram box is "drawn" (picture shown) or "failed" (table of nodes and edges shown). With
+     no state yet, a short "Drawing" text shows instead of the raw definition. */
+  function setState(box, state) {
+    box.setAttribute("data-state", state);
+    box.querySelector(".diagram-fallback").hidden = state !== "failed";
+  }
+
+  function renderSvg(definition, theme) {
+    drawCount += 1;
+    var id = "diagram-" + drawCount;
+    /* The theme travels with each definition, so overlapping draws cannot mix themes up. */
+    var text = '%%{init: {"theme": "' + theme + '"}}%%\n' + definition;
+    return window.mermaid.render(id, text).then(
+      function (result) {
+        return result.svg;
+      },
+      function (error) {
+        var leftover = document.getElementById("d" + id);
+        if (leftover) {
+          leftover.remove();
+        }
+        throw error;
+      }
+    );
+  }
+
+  /* Mermaid draws off screen, so diagrams on hidden slides are drawn too. Each diagram is drawn
+     twice: once in the current theme for the screen, once light for printing. */
+  function drawDiagram(box, theme) {
+    var pre = box.querySelector(".mermaid");
+    var printed = box.querySelector(".mermaid-print");
+    if (pre.definition === undefined) {
+      pre.definition = pre.textContent;
+    }
+    Promise.all([renderSvg(pre.definition, theme), renderSvg(pre.definition, "default")])
+      .then(function (svgs) {
+        pre.innerHTML = svgs[0];
+        printed.innerHTML = svgs[1];
+        setState(box, "drawn");
+      })
+      .catch(function () {
+        setState(box, "failed");
+      });
+  }
+
+  function drawDiagrams() {
+    var boxes = document.querySelectorAll(".diagram");
+    if (!boxes.length) {
+      return;
+    }
+    var theme = isDark() ? "dark" : "default";
+    Array.prototype.forEach.call(boxes, function (box) {
+      if (!window.mermaid) {
+        setState(box, "failed");
+        return;
+      }
+      try {
+        window.mermaid.initialize({ startOnLoad: false, securityLevel: "strict" });
+        drawDiagram(box, theme);
+      } catch (e) {
+        setState(box, "failed");
+      }
+    });
+  }
+
+  /* If Mermaid is slow to load, show the table. A later successful draw replaces it. */
+  window.setTimeout(function () {
+    Array.prototype.forEach.call(document.querySelectorAll(".diagram:not([data-state])"), function (box) {
+      setState(box, "failed");
+    });
+  }, DRAW_TIMEOUT);
+
+  if (document.readyState === "complete") {
+    drawDiagrams();
+  } else {
+    window.addEventListener("load", drawDiagrams);
+  }
+  showFromHash();
+})();
+
+</script>
+</body>
+</html>
