@@ -52,15 +52,15 @@ export default function RecordsPage() {
   }
 
   return (
-    <main className="mx-auto max-w-4xl p-8">
+    <main className="mx-auto max-w-4xl p-4 sm:p-8">
       <Link href="/" className="text-sm text-slate-600 underline">
         Back to dashboard
       </Link>
       <div className="mt-2 mb-6 flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-2xl font-semibold">Records</h1>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <MonthPicker value={month} onChange={setMonth} />
-          <Link href="/records/new" className="rounded bg-slate-900 px-3 py-1.5 text-sm text-white">
+          <Link href="/records/new" className="rounded bg-slate-900 px-3 py-1.5 text-sm whitespace-nowrap text-white">
             Add record
           </Link>
           <LogoutButton />
@@ -103,39 +103,41 @@ export default function RecordsPage() {
       ) : rows.length === 0 ? (
         <p className="text-slate-600">No records for this month.</p>
       ) : (
-        <table className="w-full text-left text-sm">
-          <thead>
-            <tr className="border-b border-slate-300">
-              <th className="py-2 pr-3">Date</th>
-              <th className="py-2 pr-3">Type</th>
-              <th className="py-2 pr-3">Category</th>
-              <th className="py-2 pr-3">Merchant</th>
-              <th className="py-2 pr-3 text-right">Amount</th>
-              <th className="py-2" />
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr key={r.id} className="border-b border-slate-200">
-                <td className="py-2 pr-3">{r.date}</td>
-                <td className="py-2 pr-3 capitalize">{r.type}</td>
-                <td className="py-2 pr-3">{r.category}</td>
-                <td className="py-2 pr-3">{r.merchant}</td>
-                <td className={`py-2 pr-3 text-right ${r.type === "income" ? "text-green-700" : ""}`}>
-                  {formatBaht(r.amountSatang)}
-                </td>
-                <td className="py-2 text-right whitespace-nowrap">
-                  <button type="button" onClick={() => setEditing(r)} className="mr-3 underline">
-                    Edit
-                  </button>
-                  <button type="button" onClick={() => remove(r)} className="text-red-700 underline">
-                    Delete
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="border-b border-slate-300">
+                <th className="py-2 pr-3">Date</th>
+                <th className="py-2 pr-3">Type</th>
+                <th className="py-2 pr-3">Category</th>
+                <th className="py-2 pr-3">Merchant</th>
+                <th className="py-2 pr-3 text-right">Amount</th>
+                <th className="py-2" />
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.id} className="border-b border-slate-200">
+                  <td className="py-2 pr-3">{r.date}</td>
+                  <td className="py-2 pr-3 capitalize">{r.type}</td>
+                  <td className="py-2 pr-3">{r.category}</td>
+                  <td className="py-2 pr-3">{r.merchant}</td>
+                  <td className={`py-2 pr-3 text-right ${r.type === "income" ? "text-green-700" : ""}`}>
+                    {formatBaht(r.amountSatang)}
+                  </td>
+                  <td className="py-2 text-right whitespace-nowrap">
+                    <button type="button" onClick={() => setEditing(r)} className="mr-3 underline">
+                      Edit
+                    </button>
+                    <button type="button" onClick={() => remove(r)} className="text-red-700 underline">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </main>
   );

@@ -48,14 +48,14 @@ export function UploadBox() {
 
   return (
     <div className="space-y-4">
-      <label className="block text-sm font-medium">
+      <label className="block rounded-lg border-2 border-dashed border-slate-300 bg-white p-4 text-sm font-medium">
         Upload a slip or receipt (JPEG, PNG or WebP, up to 10 MB)
         <input
           type="file"
           accept="image/jpeg,image/png,image/webp"
           onChange={onFile}
           disabled={loading}
-          className="mt-1 block w-full text-sm"
+          className="mt-3 block w-full cursor-pointer text-sm text-slate-600 file:mr-4 file:cursor-pointer file:rounded file:border-0 file:bg-slate-900 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-slate-700 disabled:opacity-50"
         />
       </label>
 

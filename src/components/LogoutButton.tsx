@@ -6,7 +6,7 @@ export function LogoutButton() {
     window.location.assign("/login");
   }
   return (
-    <button type="button" onClick={logout} className="text-sm underline">
+    <button type="button" onClick={logout} className="text-sm whitespace-nowrap underline">
       Log out
     </button>
   );
