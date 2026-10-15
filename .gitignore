@@ -12,3 +12,7 @@ node_modules/
 data/
 .next/
 .playwright-mcp/
+*.tsbuildinfo
+next-env.d.ts
+test-results/
+playwright-report/

@@ -40,7 +40,7 @@ E2E smoke test needs auth + manual entry + dashboard
 Details, acceptance criteria and verification for each task are in `tasks/todo.md`.
 
 ### Phase 1: Foundation (~45 min)
-- [ ] Task 1: Scaffold the project and tooling
+- [x] Task 1: Scaffold the project and tooling
 - [ ] Task 2: Data layer (schema, migration, categories, validation, money helpers)
 - [ ] Task 3: Manual entry slice
 

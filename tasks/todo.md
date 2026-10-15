@@ -10,14 +10,14 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 **Description:** Create the Next.js app (App Router, TypeScript strict, Tailwind) in the project root with the scripts from SPEC "Commands", Vitest, `.gitignore` and `.env.example`. Confirm better-sqlite3 and sharp install on this Windows machine.
 
 **Acceptance criteria:**
-- [ ] `npm run dev` serves a placeholder page at http://localhost:3000
-- [ ] Scripts `lint`, `typecheck`, `test`, `test:e2e`, `db:migrate`, `db:seed` exist
-- [ ] `.gitignore` covers `.env`, `data/`, `.tmp/`, `session-handoff/`, `node_modules/`, `credentials.json`, `token.json`; `.env.example` lists the SPEC variables with empty values
+- [x] `npm run dev` serves a placeholder page at http://localhost:3000
+- [x] Scripts `lint`, `typecheck`, `test`, `test:e2e`, `db:migrate`, `db:seed` exist
+- [x] `.gitignore` covers `.env`, `data/`, `.tmp/`, `session-handoff/`, `node_modules/`, `credentials.json`, `token.json`; `.env.example` lists the SPEC variables with empty values
 
 **Verification:**
-- [ ] Checks pass (one trivial Vitest test)
-- [ ] `npm run build` succeeds
-- [ ] Manual: open localhost:3000 and see the placeholder
+- [x] Checks pass (one trivial Vitest test)
+- [x] `npm run build` succeeds
+- [x] Manual: open localhost:3000 and see the placeholder
 
 **Dependencies:** None
 
