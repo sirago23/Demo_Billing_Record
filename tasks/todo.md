@@ -113,13 +113,13 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 **Description:** `summary.ts` computes income, expense, balance and per-category sums. The dashboard at `/` shows the month picker, three cards and two Recharts pie charts (legend, amounts, percentages), or "No data for this month".
 
 **Acceptance criteria:**
-- [ ] Cards show correct income, expense and balance for the month
-- [ ] Pie slices match the per-category sums in the records list
-- [ ] An empty month shows "No data for this month" instead of an empty chart
+- [x] Cards show correct income, expense and balance for the month
+- [x] Pie slices match the per-category sums in the records list
+- [x] An empty month shows "No data for this month" instead of an empty chart
 
 **Verification:**
-- [ ] Checks pass, with `tests/summary.test.ts` (totals, balance, per-category, empty month)
-- [ ] Manual: look at the dashboard in the browser and compare with the list
+- [x] Checks pass, with `tests/summary.test.ts` (totals, balance, per-category, empty month)
+- [x] Manual: look at the dashboard in the browser and compare with the list
 
 **Dependencies:** Task 5 (month picker, month query)
 
