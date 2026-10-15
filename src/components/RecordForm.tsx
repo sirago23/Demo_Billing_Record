@@ -16,6 +16,8 @@ export type RecordFormValues = {
 type Props = {
   initial?: Partial<RecordFormValues>;
   source?: "manual" | "slip";
+  /** When set, Save updates this record (PATCH) instead of creating one. */
+  recordId?: number;
   onSaved?: () => void;
 };
 
@@ -27,7 +29,7 @@ function todayLocal(): string {
 
 const inputClass = "mt-1 w-full rounded border border-slate-300 bg-white px-3 py-2";
 
-export function RecordForm({ initial, source = "manual", onSaved }: Props) {
+export function RecordForm({ initial, source = "manual", recordId, onSaved }: Props) {
   const [values, setValues] = useState<RecordFormValues>({
     type: initial?.type ?? "expense",
     amount: initial?.amount ?? "",
@@ -75,8 +77,8 @@ export function RecordForm({ initial, source = "manual", onSaved }: Props) {
 
     setSaving(true);
     try {
-      const res = await fetch("/api/records", {
-        method: "POST",
+      const res = await fetch(recordId === undefined ? "/api/records" : `/api/records/${recordId}`, {
+        method: recordId === undefined ? "POST" : "PATCH",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ ...payload, source }),
       });
@@ -85,7 +87,7 @@ export function RecordForm({ initial, source = "manual", onSaved }: Props) {
         return setError(body.error ?? "Could not save the record");
       }
       setSaved(true);
-      setValues((v) => ({ ...v, amount: "", merchant: "", note: "" }));
+      if (recordId === undefined) setValues((v) => ({ ...v, amount: "", merchant: "", note: "" }));
       onSaved?.();
     } catch {
       setError("Could not reach the server");

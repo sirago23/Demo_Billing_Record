@@ -49,7 +49,7 @@ Details, acceptance criteria and verification for each task are in `tasks/todo.m
 
 ### Phase 2: Core features (~75 min)
 - [x] Task 4: Slip extraction slice (highest risk, done first in this phase)
-- [ ] Task 5: Records list slice (view, edit, delete by month)
+- [x] Task 5: Records list slice (view, edit, delete by month)
 - [ ] Task 6: Dashboard slice (cards + two pie charts + month picker)
 
 ### Checkpoint B: Core flow

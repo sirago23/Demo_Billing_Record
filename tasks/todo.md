@@ -94,13 +94,13 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 **Description:** `GET /api/records?month=YYYY-MM`, `PATCH` and `DELETE /api/records/[id]`, and `/records` page with a month picker and a table (newest first, `฿1,234.50` format). Edit opens `RecordForm`; delete asks for confirmation.
 
 **Acceptance criteria:**
-- [ ] The table shows only the chosen month, newest first, with formatted amounts
-- [ ] Edit saves changes; delete removes the row after confirmation
-- [ ] Unknown id returns 404; invalid month returns 400
+- [x] The table shows only the chosen month, newest first, with formatted amounts
+- [x] Edit saves changes; delete removes the row after confirmation
+- [x] Unknown id returns 404; invalid month returns 400
 
 **Verification:**
-- [ ] Checks pass
-- [ ] Manual: add records in two months, switch months, edit one, delete one
+- [x] Checks pass
+- [x] Manual: add records in two months, switch months, edit one, delete one
 
 **Dependencies:** Task 3
 
