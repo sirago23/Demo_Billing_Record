@@ -75,13 +75,13 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 **Description:** `extract.ts` resizes the image with sharp (long edge ≤ 1568 px), calls Claude with an injected client and a JSON-only prompt (Thai slips, BE years, preset categories), and parses with the Task 2 schema. `POST /api/extract` checks file type (JPEG/PNG/WebP) and size (≤ 10 MB) and returns the result without writing to the DB. `UploadBox` on `/records/new` shows a loading state, then pre-fills `RecordForm`; saving sets `source = slip`.
 
 **Acceptance criteria:**
-- [ ] A readable slip pre-fills type, amount, date, category and merchant; nothing is saved until Save is pressed
-- [ ] Wrong file type or > 10 MB is rejected with a clear message; a failed read opens an empty form with "Could not read this image, please fill in manually"
-- [ ] Confidence < 0.7 shows "Please check these values"
+- [x] A readable slip pre-fills type, amount, date, category and merchant; nothing is saved until Save is pressed
+- [x] Wrong file type or > 10 MB is rejected with a clear message; a failed read opens an empty form with "Could not read this image, please fill in manually"
+- [x] Confidence < 0.7 shows "Please check these values"
 
 **Verification:**
-- [ ] Checks pass, with `tests/extract.test.ts` using a fake Claude client (valid answer, garbage answer, thrown error); no real API calls
-- [ ] Manual (spends credits, ask first): upload one real Thai bank slip and confirm the values and that the read takes under 15 s
+- [x] Checks pass, with `tests/extract.test.ts` using a fake Claude client (valid answer, garbage answer, thrown error); no real API calls
+- [x] Manual (spends credits, ask first): upload one real Thai bank slip and confirm the values and that the read takes under 15 s
 
 **Dependencies:** Task 3
 

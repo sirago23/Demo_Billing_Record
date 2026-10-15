@@ -48,7 +48,7 @@ Details, acceptance criteria and verification for each task are in `tasks/todo.m
 - [ ] Checks pass, a manual record saves to SQLite, human review
 
 ### Phase 2: Core features (~75 min)
-- [ ] Task 4: Slip extraction slice (highest risk, done first in this phase)
+- [x] Task 4: Slip extraction slice (highest risk, done first in this phase)
 - [ ] Task 5: Records list slice (view, edit, delete by month)
 - [ ] Task 6: Dashboard slice (cards + two pie charts + month picker)
 

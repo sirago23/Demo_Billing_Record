@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RecordForm } from "@/components/RecordForm";
+import { UploadBox } from "@/components/UploadBox";
 
 export default function NewRecordPage() {
   return (
@@ -8,7 +8,7 @@ export default function NewRecordPage() {
         Back to dashboard
       </Link>
       <h1 className="mt-2 mb-6 text-2xl font-semibold">New record</h1>
-      <RecordForm />
+      <UploadBox />
     </main>
   );
 }
