@@ -173,7 +173,7 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 **Estimated scope:** Small-Medium
 
 ## Checkpoint C: Complete
-- [ ] Every SPEC success criterion (1-6) checked and reported
-- [ ] Checks, build and E2E pass
-- [ ] Nothing sensitive staged
+- [x] Every SPEC success criterion (1-6) checked and reported
+- [x] Checks, build and E2E pass
+- [x] Nothing sensitive staged
 - [ ] Ready for demo

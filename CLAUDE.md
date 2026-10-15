@@ -26,6 +26,31 @@ Local rules for this project only. The parent WAT `CLAUDE.md` in Downloads also 
 - After every fix or edit, check the actual result yourself and confirm it is done before telling the user. Tests passing is not enough for a visual change: open the output (for example the deck in the browser) and look at it.
 - In the report, say what you checked and what you saw. If you could not check something, say so instead of claiming it is done.
 
+## For Agent skill
+Applies when running agent-skills commands (/spec, /plan, /build, /review, /ship) or delegating to subagents.
+
+### Skills the commands do not load by themselves
+- `/agent-skills:build` and `/agent-skills:build auto` load only the implementation and TDD skills. They do not load `frontend-ui-engineering` or `browser-testing-with-devtools`.
+- Before starting a task that creates or changes a page or component, load `frontend-ui-engineering`.
+- Before ticking that task, check it in a real browser with `browser-testing-with-devtools`. Use the Playwright MCP tools, because the Chrome DevTools MCP is not installed here. Follow the skill's steps and checklist, and say in the report that Playwright was used.
+
+### Plans and tasks
+- When `/plan` writes or updates `tasks/todo.md`, every task that touches the UI gets a "Visual check" line: screenshot at 1280 px and 390 px, each control used for real, empty/error/loading states.
+- `/build auto` follows the task list. If a task has no Visual check line, add one before building it and tell the user.
+
+### Reviews and checkpoints
+- `/review` and `/ship` check code, security and performance. They do not look at the pages. For a checkpoint or final review, also run the UI checks above, even if the command does not ask for them.
+- Do not replace `/ship` with a hand-made checklist without telling the user that the skill's checks were skipped and why.
+
+### Subagents
+- A subagent starts with no context. Its prompt must repeat the rules it needs: the project CLAUDE.md sections that apply (UI verification, large output, no real Claude calls) and the exact checks to run.
+- A review prompt for a UI project must name the pages and states to look at. "Verify the success criteria" is not enough.
+- Read the subagent's report as a claim, not a result. Before telling the user it is done, check anything it said it did not verify (for example "did not look at the form in the browser") and either do it or report it as open.
+
+### When a skill or tool is missing
+- If a skill needs a tool that is not installed (for example the DevTools MCP), say so once, name the substitute, and use it. Do not silently skip the step.
+- Edit nothing inside the plugin folders under `~/.claude/plugins/`. Updates overwrite those files. Put project rules in this file.
+
 ## Token Efficiency
 
 ### 1. Milestone handoff
