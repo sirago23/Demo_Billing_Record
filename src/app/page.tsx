@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { LogoutButton } from "@/components/LogoutButton";
 import { MonthPicker, currentMonth } from "@/components/MonthPicker";
 import { PieCard } from "@/components/PieCard";
 import { SummaryCards } from "@/components/SummaryCards";
@@ -47,6 +48,7 @@ export default function DashboardPage() {
           <Link href="/records/new" className="rounded bg-slate-900 px-3 py-1.5 text-sm text-white">
             Add record
           </Link>
+          <LogoutButton />
         </div>
       </div>
 

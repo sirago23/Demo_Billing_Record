@@ -56,7 +56,7 @@ Details, acceptance criteria and verification for each task are in `tasks/todo.m
 - [ ] Upload → review → save → list → pie chart works end to end, human review
 
 ### Phase 3: Protect and finish (~40 min)
-- [ ] Task 7: Password login
+- [x] Task 7: Password login
 - [ ] Task 8: Seed data, E2E smoke test, demo check
 
 ### Checkpoint C: Complete

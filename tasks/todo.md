@@ -139,13 +139,13 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 **Description:** `auth.ts` signs and verifies a session cookie with Web Crypto HMAC (`SESSION_SECRET`). `middleware.ts` redirects pages to `/login` and returns 401 for API routes without a valid cookie. `/login` page, `POST /api/login` (checks `APP_PASSWORD`, sets httpOnly cookie for 7 days), `POST /api/logout` and a Log out button.
 
 **Acceptance criteria:**
-- [ ] Without a cookie, `/` redirects to `/login` and `GET /api/records` returns 401
-- [ ] Right password logs in; wrong password shows "Wrong password"
-- [ ] Log out clears the cookie; a tampered cookie is rejected
+- [x] Without a cookie, `/` redirects to `/login` and `GET /api/records` returns 401
+- [x] Right password logs in; wrong password shows "Wrong password"
+- [x] Log out clears the cookie; a tampered cookie is rejected
 
 **Verification:**
-- [ ] Checks pass, with `tests/auth.test.ts` (sign/verify, tampered, expired)
-- [ ] Manual: `curl -i localhost:3000/api/records` returns 401; log in and out in the browser
+- [x] Checks pass, with `tests/auth.test.ts` (sign/verify, tampered, expired)
+- [x] Manual: `curl -i localhost:3000/api/records` returns 401; log in and out in the browser
 
 **Dependencies:** Tasks 3-6
 
