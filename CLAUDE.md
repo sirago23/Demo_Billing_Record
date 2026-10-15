@@ -3,7 +3,11 @@
 Local rules for this project only. The parent WAT `CLAUDE.md` in Downloads also applies; no known conflicts.
 
 ## Project
-- Not defined yet
+- **Name:** Billing record. Personal web app that records income and expenses in THB. Upload a bank slip or receipt, Claude vision pre-fills a form, the user reviews and saves. Dashboard shows pie charts by category per month. Prototype for a live demo, single user, runs locally.
+- **Stack:** Next.js 15 (App Router) + TypeScript strict, Tailwind 4, SQLite (better-sqlite3 + Drizzle), Zod, Recharts, sharp, `@anthropic-ai/sdk` (model from `CLAUDE_MODEL`, default `claude-sonnet-5-5`), Vitest, Playwright. Node 20+.
+- **Commands:** `npm run dev` (localhost:3000), `npm run build`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:e2e`, `npm run db:migrate`, `npm run db:seed`. Before each commit: `npm run lint && npm run typecheck && npm test`.
+- **Key rules:** money is stored as integer satang; extraction never writes to the DB, only the form's Save does; never call the real Claude API in automated tests; ask before spending Claude credits beyond the manual demo check.
+- **Docs:** `SPEC.md` (requirements), `tasks/plan.md` (plan), `tasks/todo.md` (task list with acceptance criteria). Env vars are listed in `SPEC.md`; `.env` is never committed.
 
 ## Boundaries
 - The repo is public. Never commit `.env`, `credentials.json`, `token.json`, `.tmp/` or `node_modules/`.
