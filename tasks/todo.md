@@ -158,12 +158,12 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 **Description:** `scripts/seed.ts` adds demo records for the last 2 months. One Playwright test: log in → add a manual expense → see it in the list → see its category on the dashboard. Final demo check with 3 real images.
 
 **Acceptance criteria:**
-- [ ] `npm run db:seed` fills the current and previous month with income and expenses in several categories
-- [ ] `npm run test:e2e` passes without calling Claude
+- [x] `npm run db:seed` fills the current and previous month with income and expenses in several categories
+- [x] `npm run test:e2e` passes without calling Claude
 - [ ] Demo check: Thai bank slip and receipt pre-fill correctly; an unreadable image shows the "fill in manually" message
 
 **Verification:**
-- [ ] Checks and `npm run test:e2e` pass
+- [x] Checks and `npm run test:e2e` pass
 - [ ] Manual (spends credits, ask first): the 3-image demo check
 
 **Dependencies:** Task 7
