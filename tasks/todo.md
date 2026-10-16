@@ -269,13 +269,13 @@ Every UI task: load `agent-skills:frontend-ui-engineering` before starting; chec
 **Description:** Restyle `/records` as a ledger: ruled rows, tabular amounts in `in` / `out` colours, newest first. On phone (≤ 760 px), rows become stacked cards (date and category on one line, merchant, amount right-aligned) with no sideways scroll. Edit opens the restyled `RecordForm` in a panel. Delete opens a `ConfirmDialog` (native `<dialog>`, danger button) instead of `window.confirm`. Add an E2E test for delete: cancel keeps the row, confirm removes it.
 
 **Acceptance criteria:**
-- [ ] Rows are still table rows on desktop (E2E `getByRole("row")` passes) and readable on phone without sideways scroll
-- [ ] Delete shows a styled dialog with a danger button; Esc and Cancel close it without deleting
-- [ ] Loading, error and "No records for this month" states look designed
+- [x] Rows are still table rows on desktop (E2E `getByRole("row")` passes) and readable on phone without sideways scroll
+- [x] Delete shows a styled dialog with a danger button; Esc and Cancel close it without deleting
+- [x] Loading, error and "No records for this month" states look designed
 
 **Verification:**
-- [ ] Checks pass; `npm run test:e2e` passes, including the new delete test
-- [ ] Visual check: screenshots at 1280 px and 390 px of a seeded month, an empty month, the edit panel and the delete dialog; switch months, edit and save a record, cancel and confirm a delete, all for real; keyboard: Tab into the dialog, Esc closes it
+- [x] Checks pass; `npm run test:e2e` passes, including the new delete test
+- [x] Visual check: screenshots at 1280 px and 390 px of a seeded month, an empty month, the edit panel and the delete dialog; switch months, edit and save a record, cancel and confirm a delete, all for real; keyboard: Tab into the dialog, Esc closes it
 
 **Dependencies:** Task 11 (shares `MonthPicker`), Task 12 (edit uses `RecordForm`)
 
