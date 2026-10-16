@@ -250,13 +250,13 @@ Every UI task: load `agent-skills:frontend-ui-engineering` before starting; chec
 **Description:** Restyle `/records/new`: upload box with dashed border (idle with "Choose file", reading with spinner, error with the "Could not read this image, please fill in manually" text) beside the form on desktop and above it on phone. `RecordForm` gets the large amount field with a ฿ prefix, type as a segmented control (styled native radios), 48 px fields, the "Please check these values" warning in `warn` colours, and Save / Cancel buttons. Labels stay as listed in the plan. The same form is used when editing in Task 13.
 
 **Acceptance criteria:**
-- [ ] Clicking "Choose file" opens the file chooser; wrong type or > 10 MB shows a designed error
-- [ ] Reading, read-failed and low-confidence states each look designed; nothing is saved before Save
-- [ ] Changing the type still filters the categories; "Record saved" still appears after Save
+- [x] Clicking "Choose file" opens the file chooser; wrong type or > 10 MB shows a designed error
+- [x] Reading, read-failed and low-confidence states each look designed; nothing is saved before Save
+- [x] Changing the type still filters the categories; "Record saved" still appears after Save
 
 **Verification:**
-- [ ] Checks pass; `npm run test:e2e` passes
-- [ ] Visual check: screenshots at 1280 px and 390 px of idle, reading (delayed `/api/extract` via Playwright route), read failed, low confidence (fake response with confidence 0.5), wrong file type, and saved; use the file chooser, type toggle, category select and Save for real. No real Claude calls
+- [x] Checks pass; `npm run test:e2e` passes
+- [x] Visual check: screenshots at 1280 px and 390 px of idle, reading (delayed `/api/extract` via Playwright route), read failed, low confidence (fake response with confidence 0.5), wrong file type, and saved; use the file chooser, type toggle, category select and Save for real. No real Claude calls
 
 **Dependencies:** Task 10
 

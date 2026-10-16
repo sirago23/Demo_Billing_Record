@@ -1,8 +1,11 @@
 "use client";
 
+import { CircleAlert, CircleCheck } from "lucide-react";
 import { useState } from "react";
 import { categoriesFor, RECORD_TYPES, type RecordType } from "@/lib/categories";
 import { recordInputSchema } from "@/lib/validation";
+import { Button } from "./ui/Button";
+import { CONTROL_CLASS, Field, SelectField } from "./ui/Field";
 
 export type RecordFormValues = {
   type: RecordType;
@@ -19,6 +22,8 @@ type Props = {
   /** When set, Save updates this record (PATCH) instead of creating one. */
   recordId?: number;
   onSaved?: () => void;
+  /** When set, a Cancel button is shown next to Save. */
+  onCancel?: () => void;
 };
 
 function todayLocal(): string {
@@ -27,9 +32,7 @@ function todayLocal(): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
-const inputClass = "mt-1 w-full rounded border border-slate-300 bg-white px-3 py-2";
-
-export function RecordForm({ initial, source = "manual", recordId, onSaved }: Props) {
+export function RecordForm({ initial, source = "manual", recordId, onSaved, onCancel }: Props) {
   const [values, setValues] = useState<RecordFormValues>({
     type: initial?.type ?? "expense",
     amount: initial?.amount ?? "",
@@ -97,18 +100,22 @@ export function RecordForm({ initial, source = "manual", recordId, onSaved }: Pr
   }
 
   return (
-    <form onSubmit={submit} className="space-y-4" noValidate>
+    <form onSubmit={submit} className="space-y-5" noValidate>
       <fieldset>
         <legend className="text-sm font-medium">Type</legend>
-        <div className="mt-1 flex gap-4">
+        <div className="mt-1 grid grid-cols-2 rounded-control border border-rule bg-paper p-[3px]">
           {RECORD_TYPES.map((t) => (
-            <label key={t} className="flex items-center gap-2 capitalize">
+            <label
+              key={t}
+              className="grid min-h-[42px] cursor-pointer place-items-center rounded-segment font-medium text-muted capitalize has-checked:bg-sheet has-checked:text-ink has-checked:shadow-[0_0_0_1px_var(--color-rule)] has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-accent"
+            >
               <input
                 type="radio"
                 name="type"
                 value={t}
                 checked={values.type === t}
                 onChange={() => changeType(t)}
+                className="sr-only"
               />
               {t}
             </label>
@@ -118,77 +125,63 @@ export function RecordForm({ initial, source = "manual", recordId, onSaved }: Pr
 
       <label className="block text-sm font-medium">
         Amount (THB)
-        <input
-          className={inputClass}
-          inputMode="decimal"
-          placeholder="0.00"
-          value={values.amount}
-          onChange={(e) => update("amount", e.target.value)}
-        />
+        <span className="relative mt-1 block">
+          <span aria-hidden className="absolute top-1/2 left-3.5 -translate-y-1/2 text-[1.375rem] text-muted">
+            ฿
+          </span>
+          <input
+            className={`${CONTROL_CLASS} min-h-[60px] pl-10 text-[1.75rem] font-semibold`}
+            inputMode="decimal"
+            placeholder="0.00"
+            value={values.amount}
+            onChange={(e) => update("amount", e.target.value)}
+          />
+        </span>
       </label>
 
-      <label className="block text-sm font-medium">
-        Date
-        <input
+      <div className="grid gap-5 sm:grid-cols-2">
+        <Field
+          label="Date"
           type="date"
-          className={inputClass}
           value={values.date}
           onChange={(e) => update("date", e.target.value)}
           suppressHydrationWarning
         />
-      </label>
-
-      <label className="block text-sm font-medium">
-        Category
-        <select
-          className={inputClass}
-          value={values.category}
-          onChange={(e) => update("category", e.target.value)}
-        >
+        <SelectField label="Category" value={values.category} onChange={(e) => update("category", e.target.value)}>
           {categoriesFor(values.type).map((c) => (
             <option key={c} value={c}>
               {c}
             </option>
           ))}
-        </select>
-      </label>
+        </SelectField>
+      </div>
 
-      <label className="block text-sm font-medium">
-        Merchant / counterparty
-        <input
-          className={inputClass}
-          value={values.merchant}
-          onChange={(e) => update("merchant", e.target.value)}
-        />
-      </label>
-
-      <label className="block text-sm font-medium">
-        Note
-        <input
-          className={inputClass}
-          value={values.note}
-          onChange={(e) => update("note", e.target.value)}
-        />
-      </label>
+      <Field label="Merchant / counterparty" value={values.merchant} onChange={(e) => update("merchant", e.target.value)} />
+      <Field label="Note" value={values.note} onChange={(e) => update("note", e.target.value)} />
 
       {error && (
-        <p role="alert" className="rounded bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p role="alert" className="flex items-start gap-2 rounded-control bg-err-bg px-3 py-2.5 text-sm text-out">
+          <CircleAlert aria-hidden size={18} className="mt-0.5 shrink-0" />
           {error}
         </p>
       )}
       {saved && (
-        <p role="status" className="rounded bg-green-50 px-3 py-2 text-sm text-green-700">
+        <p role="status" className="flex items-start gap-2 rounded-control bg-accent-soft px-3 py-2.5 text-sm text-in">
+          <CircleCheck aria-hidden size={18} className="mt-0.5 shrink-0" />
           Record saved
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={saving}
-        className="rounded bg-slate-900 px-4 py-2 text-white disabled:opacity-50"
-      >
-        {saving ? "Saving..." : "Save"}
-      </button>
+      <div className="flex gap-3 sm:justify-end">
+        {onCancel && (
+          <Button type="button" variant="secondary" onClick={onCancel} className="flex-1 sm:flex-none">
+            Cancel
+          </Button>
+        )}
+        <Button type="submit" disabled={saving} className="flex-1 sm:flex-none sm:min-w-28">
+          {saving ? "Saving..." : "Save"}
+        </Button>
+      </div>
     </form>
   );
 }
