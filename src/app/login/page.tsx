@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { CircleAlert } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { Field } from "@/components/ui/Field";
 import { APP_NAME } from "@/lib/app-name";
 
 export default function LoginPage() {
@@ -31,33 +34,34 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="mx-auto max-w-sm p-8">
-      <h1 className="mb-6 text-2xl font-semibold">{APP_NAME}</h1>
-      <form onSubmit={onSubmit} className="space-y-4">
-        <label className="block text-sm font-medium">
-          Password
-          <input
-            type="password"
-            autoComplete="current-password"
-            autoFocus
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 block w-full rounded border border-slate-300 bg-white px-3 py-2"
-          />
-        </label>
+    <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-4 py-8">
+      <h1 className="mb-1 text-3xl font-semibold tracking-tight text-accent">{APP_NAME}</h1>
+      <p className="mb-6 text-muted">Log in to see your income and expenses.</p>
+      <form
+        onSubmit={onSubmit}
+        className="space-y-4 rounded-panel border border-rule bg-sheet p-6"
+      >
+        <Field
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+          autoFocus
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         {error && (
-          <p role="alert" className="rounded bg-red-50 px-3 py-2 text-sm text-red-700">
+          <p
+            role="alert"
+            className="flex items-start gap-2 rounded-control bg-err-bg px-3 py-2 text-sm text-out"
+          >
+            <CircleAlert aria-hidden className="mt-0.5 size-4 shrink-0" />
             {error}
           </p>
         )}
-        <button
-          type="submit"
-          disabled={busy}
-          className="w-full rounded bg-slate-900 px-3 py-2 text-white disabled:opacity-50"
-        >
+        <Button type="submit" disabled={busy} className="w-full">
           {busy ? "Logging in…" : "Log in"}
-        </button>
+        </Button>
       </form>
     </main>
   );

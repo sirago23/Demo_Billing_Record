@@ -188,13 +188,13 @@ Every UI task: load `agent-skills:frontend-ui-engineering` before starting; chec
 **Description:** Add the option A colour tokens and chart colours to `globals.css` with Tailwind 4 `@theme`, load Anuphan via `next/font/google` in the root layout, install `lucide-react`, and create `Button` and `Field` primitives. Restyle `/login` with them as the first screen that proves the tokens work end to end.
 
 **Acceptance criteria:**
-- [ ] Tokens from `SPEC-ui-redesign.md` > Chosen design exist as Tailwind theme colours; the body uses `paper` background, `ink` text, Anuphan and tabular figures
-- [ ] `/login` shows the wordmark, a 48 px password field and a primary "Log in" button in the accent colour; "Wrong password" shows as a designed error
-- [ ] No hex colours in components; `lucide-react` is the only new dependency
+- [x] Tokens from `SPEC-ui-redesign.md` > Chosen design exist as Tailwind theme colours; the body uses `paper` background, `ink` text, Anuphan and tabular figures
+- [x] `/login` shows the wordmark, a 48 px password field and a primary "Log in" button in the accent colour; "Wrong password" shows as a designed error
+- [x] No hex colours in components; `lucide-react` is the only new dependency
 
 **Verification:**
-- [ ] Checks pass; `npm run build` succeeds; `npm run test:e2e` passes
-- [ ] Visual check: screenshot `/login` at 1280 px and 390 px; type a wrong password and see the error; log in for real; Tab through the form and see the focus ring
+- [x] Checks pass; `npm run build` succeeds; `npm run test:e2e` passes
+- [x] Visual check: screenshot `/login` at 1280 px and 390 px; type a wrong password and see the error; log in for real; Tab through the form and see the focus ring
 
 **Dependencies:** None (Tasks 1-8 done)
 
