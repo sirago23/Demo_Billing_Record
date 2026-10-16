@@ -1,7 +1,7 @@
 "use client";
 
 import { Inbox, Pencil, Trash2 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { MonthPicker, currentMonth } from "@/components/MonthPicker";
 import { RecordForm } from "@/components/RecordForm";
@@ -26,14 +26,20 @@ export default function RecordsPage() {
   const [deleting, setDeleting] = useState<Row | null>(null);
   const [deleteBusy, setDeleteBusy] = useState(false);
 
+  // Only the newest request may write state, so a slow answer for an earlier month cannot overwrite a later one.
+  const latestRequest = useRef(0);
+
   const load = useCallback(async (m: string) => {
+    const request = ++latestRequest.current;
     try {
       const res = await fetch(`/api/records?month=${m}`);
       const body: { records?: Row[]; error?: string } = await res.json();
       if (!res.ok || !body.records) throw new Error(body.error ?? "Could not load records");
+      if (request !== latestRequest.current) return;
       setRows(body.records);
       setError(null);
     } catch (e) {
+      if (request !== latestRequest.current) return;
       setError(e instanceof Error ? e.message : "Could not load records");
     }
   }, []);
