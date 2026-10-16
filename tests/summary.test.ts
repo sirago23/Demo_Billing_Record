@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { percentOf, sumByCategory, summarize, type SummaryRow } from "@/lib/summary";
+import { percentLabel, percentOf, sumByCategory, summarize, type SummaryRow } from "@/lib/summary";
 
 const rows: SummaryRow[] = [
   { type: "income", category: "Salary", amountSatang: 3_000_000 },
@@ -70,5 +70,16 @@ describe("percentOf", () => {
 
   it("returns 0 when the total is 0", () => {
     expect(percentOf(0, 0)).toBe(0);
+  });
+});
+
+describe("percentLabel", () => {
+  it("shows one decimal place", () => {
+    expect(percentLabel(345, 1000)).toBe("34.5%");
+    expect(percentLabel(1, 3)).toBe("33.3%");
+  });
+
+  it("shows 0.0% when the whole is zero", () => {
+    expect(percentLabel(0, 0)).toBe("0.0%");
   });
 });

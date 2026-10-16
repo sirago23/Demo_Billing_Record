@@ -231,13 +231,13 @@ Every UI task: load `agent-skills:frontend-ui-engineering` before starting; chec
 **Description:** Restyle the dashboard: month picker with 44 px arrow buttons, the balance as a large statement ("… left after spending this month. You kept N% of what came in."), the 3-cell ledger strip (Money in in `in` colour, Money out in `out` colour, Balance on `accent-soft`), and both pie charts as Recharts donuts with the total in the centre and our own legend (dotted leaders, amount, one-decimal percent). Segments fade in once on load; off under `prefers-reduced-motion`.
 
 **Acceptance criteria:**
-- [ ] Totals, balance and per-category amounts are unchanged from before (same numbers as the records list)
-- [ ] Donut colours and legend colours come from one helper and match in order
-- [ ] An empty month shows "No data for this month" as a designed empty state, with an "Add record" hint
+- [x] Totals, balance and per-category amounts are unchanged from before (same numbers as the records list)
+- [x] Donut colours and legend colours come from one helper and match in order
+- [x] An empty month shows "No data for this month" as a designed empty state, with an "Add record" hint
 
 **Verification:**
-- [ ] Checks pass (add a unit test if a new pure helper is created, e.g. percent formatting); `npm run test:e2e` passes
-- [ ] Visual check: screenshots at 1280 px and 390 px for a seeded month and an empty month; use the month picker for real in both directions; compare chart amounts with `/records`; check with reduced motion that nothing animates
+- [x] Checks pass (add a unit test if a new pure helper is created, e.g. percent formatting); `npm run test:e2e` passes
+- [x] Visual check: screenshots at 1280 px and 390 px for a seeded month and an empty month; use the month picker for real in both directions; compare chart amounts with `/records`; check with reduced motion that nothing animates
 
 **Dependencies:** Task 10
 

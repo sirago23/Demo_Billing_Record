@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* Option A "Passbook" tokens. Source of truth: SPEC-ui-redesign.md > Chosen design. */
-@theme {
+@theme static {
   --font-sans: var(--font-anuphan), ui-sans-serif, system-ui, sans-serif;
 
   --color-paper: #eef2f5;
@@ -46,5 +46,21 @@
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
+  }
+}
+
+/* Donut fades in once on load; off for people who ask for less motion. */
+@keyframes donut-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.donut-fade {
+  animation: donut-fade 600ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .donut-fade {
+    animation: none;
   }
 }

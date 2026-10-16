@@ -44,3 +44,8 @@ export function summarize(rows: SummaryRow[]): Summary {
 export function percentOf(part: number, whole: number): number {
   return whole === 0 ? 0 : Math.round((part / whole) * 100);
 }
+
+/** One decimal place, e.g. "34.5%". Used by the chart legend. */
+export function percentLabel(part: number, whole: number): string {
+  return `${(whole === 0 ? 0 : (part / whole) * 100).toFixed(1)}%`;
+}
