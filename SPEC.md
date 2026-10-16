@@ -1,5 +1,7 @@
 # Spec: Billing record
 
+UI redesign: see `SPEC-ui-redesign.md`.
+
 ## Objective
 
 A personal web app that records income and expenses in Thai baht (THB). The user uploads a bank slip or a receipt photo; Claude vision reads it and pre-fills a form; the user checks it and saves. Records can also be entered by hand. A dashboard shows pie charts of expenses and income by category for a chosen month.

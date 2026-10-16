@@ -177,3 +177,138 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 - [x] Checks, build and E2E pass
 - [x] Nothing sensitive staged
 - [ ] Ready for demo
+
+## Phase 4: UI redesign
+
+Spec: `SPEC-ui-redesign.md` (option A, Passbook). Plan: `tasks/plan.md` > Phase 4.
+Every UI task: load `agent-skills:frontend-ui-engineering` before starting; check it in a real browser with Playwright before ticking. E2E labels listed in the plan must not change.
+
+## Task 9: Design tokens, Anuphan font, UI primitives, login screen
+
+**Description:** Add the option A colour tokens and chart colours to `globals.css` with Tailwind 4 `@theme`, load Anuphan via `next/font/google` in the root layout, install `lucide-react`, and create `Button` and `Field` primitives. Restyle `/login` with them as the first screen that proves the tokens work end to end.
+
+**Acceptance criteria:**
+- [ ] Tokens from `SPEC-ui-redesign.md` > Chosen design exist as Tailwind theme colours; the body uses `paper` background, `ink` text, Anuphan and tabular figures
+- [ ] `/login` shows the wordmark, a 48 px password field and a primary "Log in" button in the accent colour; "Wrong password" shows as a designed error
+- [ ] No hex colours in components; `lucide-react` is the only new dependency
+
+**Verification:**
+- [ ] Checks pass; `npm run build` succeeds; `npm run test:e2e` passes
+- [ ] Visual check: screenshot `/login` at 1280 px and 390 px; type a wrong password and see the error; log in for real; Tab through the form and see the focus ring
+
+**Dependencies:** None (Tasks 1-8 done)
+
+**Files likely touched:** `src/app/globals.css`, `src/app/layout.tsx`, `src/components/ui/Button.tsx`, `src/components/ui/Field.tsx`, `src/app/login/page.tsx`, `package.json`
+
+**Estimated scope:** Medium
+
+## Task 10: App header and navigation
+
+**Description:** One `AppHeader` with the wordmark, Overview and Records links (current page underlined in accent), an "Add record" primary button and "Log out". On phone (≤ 760 px), Overview, Records and Add record move to a bottom tab bar and Log out becomes an icon button with the accessible name "Log out". Used on the dashboard, records and add-record pages; replaces the old per-page links.
+
+**Acceptance criteria:**
+- [ ] The header looks the same on all three pages, and the current page is marked (`aria-current="page"`)
+- [ ] Exactly one visible "Add record" link and one visible "Log out" button at any width
+- [ ] On phone, the tab bar does not cover page content (bottom padding on `<main>`)
+
+**Verification:**
+- [ ] Checks pass; `npm run test:e2e` passes
+- [ ] Visual check: screenshots of the header on all three pages at 1280 px and 390 px; click every nav link and Log out for real; no sideways scroll at 390 and 320 px
+
+**Dependencies:** Task 9
+
+**Files likely touched:** `src/components/AppHeader.tsx`, `src/components/LogoutButton.tsx`, `src/app/page.tsx`, `src/app/records/page.tsx`, `src/app/records/new/page.tsx`
+
+**Estimated scope:** Medium
+
+## Checkpoint D: Foundation
+- [ ] Checks, build and E2E pass
+- [ ] Login and header match option A at 1280 and 390 px (screenshots looked at)
+- [ ] Review with human before Phase 4b
+
+## Task 11: Dashboard in Passbook style
+
+**Description:** Restyle the dashboard: month picker with 44 px arrow buttons, the balance as a large statement ("… left after spending this month. You kept N% of what came in."), the 3-cell ledger strip (Money in in `in` colour, Money out in `out` colour, Balance on `accent-soft`), and both pie charts as Recharts donuts with the total in the centre and our own legend (dotted leaders, amount, one-decimal percent). Segments fade in once on load; off under `prefers-reduced-motion`.
+
+**Acceptance criteria:**
+- [ ] Totals, balance and per-category amounts are unchanged from before (same numbers as the records list)
+- [ ] Donut colours and legend colours come from one helper and match in order
+- [ ] An empty month shows "No data for this month" as a designed empty state, with an "Add record" hint
+
+**Verification:**
+- [ ] Checks pass (add a unit test if a new pure helper is created, e.g. percent formatting); `npm run test:e2e` passes
+- [ ] Visual check: screenshots at 1280 px and 390 px for a seeded month and an empty month; use the month picker for real in both directions; compare chart amounts with `/records`; check with reduced motion that nothing animates
+
+**Dependencies:** Task 10
+
+**Files likely touched:** `src/app/page.tsx`, `src/components/MonthPicker.tsx`, `src/components/SummaryCards.tsx`, `src/components/PieCard.tsx`, `src/lib/chart-colors.ts`
+
+**Estimated scope:** Medium
+
+## Task 12: Add-record screen (upload box and form)
+
+**Description:** Restyle `/records/new`: upload box with dashed border (idle with "Choose file", reading with spinner, error with the "Could not read this image, please fill in manually" text) beside the form on desktop and above it on phone. `RecordForm` gets the large amount field with a ฿ prefix, type as a segmented control (styled native radios), 48 px fields, the "Please check these values" warning in `warn` colours, and Save / Cancel buttons. Labels stay as listed in the plan. The same form is used when editing in Task 13.
+
+**Acceptance criteria:**
+- [ ] Clicking "Choose file" opens the file chooser; wrong type or > 10 MB shows a designed error
+- [ ] Reading, read-failed and low-confidence states each look designed; nothing is saved before Save
+- [ ] Changing the type still filters the categories; "Record saved" still appears after Save
+
+**Verification:**
+- [ ] Checks pass; `npm run test:e2e` passes
+- [ ] Visual check: screenshots at 1280 px and 390 px of idle, reading (delayed `/api/extract` via Playwright route), read failed, low confidence (fake response with confidence 0.5), wrong file type, and saved; use the file chooser, type toggle, category select and Save for real. No real Claude calls
+
+**Dependencies:** Task 10
+
+**Files likely touched:** `src/components/UploadBox.tsx`, `src/components/RecordForm.tsx`, `src/app/records/new/page.tsx`, `src/components/ui/Field.tsx`
+
+**Estimated scope:** Medium
+
+## Task 13: Records list, edit and styled delete confirmation
+
+**Description:** Restyle `/records` as a ledger: ruled rows, tabular amounts in `in` / `out` colours, newest first. On phone (≤ 760 px), rows become stacked cards (date and category on one line, merchant, amount right-aligned) with no sideways scroll. Edit opens the restyled `RecordForm` in a panel. Delete opens a `ConfirmDialog` (native `<dialog>`, danger button) instead of `window.confirm`. Add an E2E test for delete: cancel keeps the row, confirm removes it.
+
+**Acceptance criteria:**
+- [ ] Rows are still table rows on desktop (E2E `getByRole("row")` passes) and readable on phone without sideways scroll
+- [ ] Delete shows a styled dialog with a danger button; Esc and Cancel close it without deleting
+- [ ] Loading, error and "No records for this month" states look designed
+
+**Verification:**
+- [ ] Checks pass; `npm run test:e2e` passes, including the new delete test
+- [ ] Visual check: screenshots at 1280 px and 390 px of a seeded month, an empty month, the edit panel and the delete dialog; switch months, edit and save a record, cancel and confirm a delete, all for real; keyboard: Tab into the dialog, Esc closes it
+
+**Dependencies:** Task 11 (shares `MonthPicker`), Task 12 (edit uses `RecordForm`)
+
+**Files likely touched:** `src/app/records/page.tsx`, `src/components/ui/ConfirmDialog.tsx`, `e2e/delete.spec.ts`
+
+**Estimated scope:** Medium
+
+## Checkpoint E: Screens
+- [ ] Checks, build and E2E pass
+- [ ] Every screen and state from Tasks 11-13 matches option A at 1280 and 390 px (screenshots looked at)
+- [ ] Review with human before Phase 4c
+
+## Task 14: Consistency and accessibility pass
+
+**Description:** Compare all screens side by side and remove any drift (stray colours, radii or default-looking controls). Keyboard pass on login, add-record and the delete dialog. Check contrast of text and amounts against WCAG AA. Check 320 px width. Update the favicon to the accent colour if it no longer matches.
+
+**Acceptance criteria:**
+- [ ] No hex colours outside `globals.css`; no unstyled native control left (file input, select, date)
+- [ ] Contrast of `muted`, `in`, `out` and `warn` text on their backgrounds is ≥ 4.5:1; focus ring visible on every control
+- [ ] No page-level sideways scroll at 1280, 390 and 320 px on any screen
+
+**Verification:**
+- [ ] Checks pass; `npm run build` succeeds; `npm run test:e2e` passes
+- [ ] Visual check: full set of screenshots (4 screens, all states) at 1280 px and 390 px, plus 320 px for each screen; contrast ratios computed and listed in the report
+
+**Dependencies:** Tasks 9-13
+
+**Files likely touched:** `src/app/globals.css`, `src/app/icon.svg`, any component with drift
+
+**Estimated scope:** Small-Medium
+
+## Checkpoint F: Redesign complete
+- [ ] All 8 success criteria in `SPEC-ui-redesign.md` checked and reported
+- [ ] `/agent-skills:review` run, prompt naming every page and state above; Critical and Important findings fixed
+- [ ] Nothing sensitive staged
+- [ ] Ready for demo
