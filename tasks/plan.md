@@ -45,7 +45,7 @@ Details, acceptance criteria and verification for each task are in `tasks/todo.m
 - [x] Task 3: Manual entry slice
 
 ### Checkpoint A: Foundation
-- [ ] Checks pass, a manual record saves to SQLite, human review
+- [x] Checks pass, a manual record saves to SQLite, human review
 
 ### Phase 2: Core features (~75 min)
 - [x] Task 4: Slip extraction slice (highest risk, done first in this phase)
@@ -53,14 +53,14 @@ Details, acceptance criteria and verification for each task are in `tasks/todo.m
 - [x] Task 6: Dashboard slice (cards + two pie charts + month picker)
 
 ### Checkpoint B: Core flow
-- [ ] Upload → review → save → list → pie chart works end to end, human review
+- [x] Upload → review → save → list → pie chart works end to end, human review
 
 ### Phase 3: Protect and finish (~40 min)
 - [x] Task 7: Password login
 - [x] Task 8: Seed data, E2E smoke test, demo check
 
 ### Checkpoint C: Complete
-- [ ] All SPEC success criteria met, ready for demo
+- [x] All SPEC success criteria met, ready for demo
 
 ## Parallelization
 

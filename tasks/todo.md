@@ -64,9 +64,9 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 **Estimated scope:** Small-Medium
 
 ## Checkpoint A: Foundation
-- [ ] Checks pass and `npm run build` succeeds
-- [ ] A manual record saves and is correct in the DB
-- [ ] Review with human before Phase 2
+- [x] Checks pass and `npm run build` succeeds
+- [x] A manual record saves and is correct in the DB
+- [x] Review with human before Phase 2
 
 ## Phase 2: Core features
 
@@ -128,9 +128,9 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 **Estimated scope:** Medium
 
 ## Checkpoint B: Core flow
-- [ ] Checks pass and `npm run build` succeeds
-- [ ] Upload a slip → review → save → see it in the list → see it in the pie chart
-- [ ] Review with human before Phase 3
+- [x] Checks pass and `npm run build` succeeds
+- [x] Upload a slip → review → save → see it in the list → see it in the pie chart
+- [x] Review with human before Phase 3
 
 ## Phase 3: Protect and finish
 
@@ -176,7 +176,7 @@ Checks command used below: `npm run lint && npm run typecheck && npm test` (call
 - [x] Every SPEC success criterion (1-6) checked and reported
 - [x] Checks, build and E2E pass
 - [x] Nothing sensitive staged
-- [ ] Ready for demo
+- [x] Ready for demo
 
 ## Phase 4: UI redesign
 
