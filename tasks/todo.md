@@ -207,13 +207,13 @@ Every UI task: load `agent-skills:frontend-ui-engineering` before starting; chec
 **Description:** One `AppHeader` with the wordmark, Overview and Records links (current page underlined in accent), an "Add record" primary button and "Log out". On phone (≤ 760 px), Overview, Records and Add record move to a bottom tab bar and Log out becomes an icon button with the accessible name "Log out". Used on the dashboard, records and add-record pages; replaces the old per-page links.
 
 **Acceptance criteria:**
-- [ ] The header looks the same on all three pages, and the current page is marked (`aria-current="page"`)
-- [ ] Exactly one visible "Add record" link and one visible "Log out" button at any width
-- [ ] On phone, the tab bar does not cover page content (bottom padding on `<main>`)
+- [x] The header looks the same on all three pages, and the current page is marked (`aria-current="page"`)
+- [x] Exactly one visible "Add record" link and one visible "Log out" button at any width
+- [x] On phone, the tab bar does not cover page content (bottom padding on `<main>`)
 
 **Verification:**
-- [ ] Checks pass; `npm run test:e2e` passes
-- [ ] Visual check: screenshots of the header on all three pages at 1280 px and 390 px; click every nav link and Log out for real; no sideways scroll at 390 and 320 px
+- [x] Checks pass; `npm run test:e2e` passes
+- [x] Visual check: screenshots of the header on all three pages at 1280 px and 390 px; click every nav link and Log out for real; no sideways scroll at 390 and 320 px
 
 **Dependencies:** Task 9
 

@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { LogoutButton } from "@/components/LogoutButton";
+import { AppHeader } from "@/components/AppHeader";
 import { MonthPicker, currentMonth } from "@/components/MonthPicker";
 import { PieCard } from "@/components/PieCard";
 import { SummaryCards } from "@/components/SummaryCards";
@@ -37,19 +36,12 @@ export default function DashboardPage() {
   const summary = useMemo(() => (rows ? summarize(rows) : null), [rows]);
 
   return (
-    <main className="mx-auto max-w-4xl p-4 sm:p-8">
+    <>
+    <AppHeader />
+    <main className="mx-auto max-w-4xl px-4 pt-6 pb-24 sm:px-8 tab:pb-8">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Billing record</h1>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <MonthPicker value={month} onChange={setMonth} />
-          <Link href="/records" className="text-sm underline">
-            Records
-          </Link>
-          <Link href="/records/new" className="rounded bg-slate-900 px-3 py-1.5 text-sm whitespace-nowrap text-white">
-            Add record
-          </Link>
-          <LogoutButton />
-        </div>
+        <h1 className="text-2xl font-semibold">Overview</h1>
+        <MonthPicker value={month} onChange={setMonth} />
       </div>
 
       {error && (
@@ -70,5 +62,6 @@ export default function DashboardPage() {
         !error && <p className="text-slate-600">Loading...</p>
       )}
     </main>
+    </>
   );
 }

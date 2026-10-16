@@ -26,6 +26,9 @@
   --color-chart-6: #6e7c8f;
   --color-chart-7: #b9a6db;
 
+  /* Phone layout (bottom tab bar) is 760 px and below. */
+  --breakpoint-tab: 761px;
+
   --radius-panel: 10px;
   --radius-control: 8px;
   --radius-segment: 6px;
