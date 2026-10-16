@@ -222,9 +222,9 @@ Every UI task: load `agent-skills:frontend-ui-engineering` before starting; chec
 **Estimated scope:** Medium
 
 ## Checkpoint D: Foundation
-- [ ] Checks, build and E2E pass
-- [ ] Login and header match option A at 1280 and 390 px (screenshots looked at)
-- [ ] Review with human before Phase 4b
+- [x] Checks, build and E2E pass
+- [x] Login and header match option A at 1280 and 390 px (screenshots looked at)
+- [x] Review with human before Phase 4b
 
 ## Task 11: Dashboard in Passbook style
 
@@ -284,9 +284,9 @@ Every UI task: load `agent-skills:frontend-ui-engineering` before starting; chec
 **Estimated scope:** Medium
 
 ## Checkpoint E: Screens
-- [ ] Checks, build and E2E pass
-- [ ] Every screen and state from Tasks 11-13 matches option A at 1280 and 390 px (screenshots looked at)
-- [ ] Review with human before Phase 4c
+- [x] Checks, build and E2E pass
+- [x] Every screen and state from Tasks 11-13 matches option A at 1280 and 390 px (screenshots looked at)
+- [x] Review with human before Phase 4c
 
 ## Task 14: Consistency and accessibility pass
 
@@ -308,7 +308,7 @@ Every UI task: load `agent-skills:frontend-ui-engineering` before starting; chec
 **Estimated scope:** Small-Medium
 
 ## Checkpoint F: Redesign complete
-- [ ] All 8 success criteria in `SPEC-ui-redesign.md` checked and reported
-- [ ] `/agent-skills:review` run, prompt naming every page and state above; Critical and Important findings fixed
-- [ ] Nothing sensitive staged
-- [ ] Ready for demo
+- [x] All 8 success criteria in `SPEC-ui-redesign.md` checked and reported
+- [x] `/agent-skills:review` run, prompt naming every page and state above; Critical and Important findings fixed
+- [x] Nothing sensitive staged
+- [x] Ready for demo

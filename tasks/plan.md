@@ -125,27 +125,27 @@ Tasks 11, 12 and 13 only depend on 9 and 10. They are built in order in one sess
 ## Task List
 
 ### Phase 4a: Foundation (~40 min)
-- [ ] Task 9: Design tokens, Anuphan font, UI primitives, login screen
-- [ ] Task 10: App header and navigation (desktop nav, phone tab bar)
+- [x] Task 9: Design tokens, Anuphan font, UI primitives, login screen
+- [x] Task 10: App header and navigation (desktop nav, phone tab bar)
 
 ### Checkpoint D: Foundation
-- [ ] Login and header match option A at 1280 and 390 px; checks, build and E2E pass; human review
+- [x] Login and header match option A at 1280 and 390 px; checks, build and E2E pass; human review
 
 ### Phase 4b: Screens (~90 min)
-- [ ] Task 11: Dashboard in Passbook style
-- [ ] Task 12: Add-record screen (upload box and form)
-- [ ] Task 13: Records list, edit and styled delete confirmation
+- [x] Task 11: Dashboard in Passbook style
+- [x] Task 12: Add-record screen (upload box and form)
+- [x] Task 13: Records list, edit and styled delete confirmation
 
 ### Checkpoint E: Screens
-- [ ] Every screen and state matches option A at 1280 and 390 px; checks, build and E2E pass; human review
+- [x] Every screen and state matches option A at 1280 and 390 px; checks, build and E2E pass; human review
 
 ### Phase 4c: Finish (~30 min)
-- [ ] Task 14: Consistency and accessibility pass
+- [x] Task 14: Consistency and accessibility pass
 
 ### Checkpoint F: Redesign complete
-- [ ] All 8 success criteria in `SPEC-ui-redesign.md` checked and reported
-- [ ] `/agent-skills:review` run with the pages and states named in the prompt; Critical and Important findings fixed
-- [ ] Ready for demo
+- [x] All 8 success criteria in `SPEC-ui-redesign.md` checked and reported
+- [x] `/agent-skills:review` run with the pages and states named in the prompt; Critical and Important findings fixed
+- [x] Ready for demo
 
 ## Risks and Mitigations
 
