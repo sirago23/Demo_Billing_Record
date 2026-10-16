@@ -109,7 +109,7 @@ export default function RecordsPage() {
             <div role="status" aria-busy="true" className="rounded-panel border border-rule bg-sheet p-5">
               <span className="sr-only">Loading...</span>
               {[0, 1, 2].map((i) => (
-                <div key={i} className="mb-3 h-6 animate-pulse rounded bg-paper last:mb-0 motion-reduce:animate-none" />
+                <div key={i} className="mb-3 h-6 animate-pulse rounded-control bg-paper last:mb-0 motion-reduce:animate-none" />
               ))}
             </div>
           )

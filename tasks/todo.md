@@ -293,13 +293,13 @@ Every UI task: load `agent-skills:frontend-ui-engineering` before starting; chec
 **Description:** Compare all screens side by side and remove any drift (stray colours, radii or default-looking controls). Keyboard pass on login, add-record and the delete dialog. Check contrast of text and amounts against WCAG AA. Check 320 px width. Update the favicon to the accent colour if it no longer matches.
 
 **Acceptance criteria:**
-- [ ] No hex colours outside `globals.css`; no unstyled native control left (file input, select, date)
-- [ ] Contrast of `muted`, `in`, `out` and `warn` text on their backgrounds is ≥ 4.5:1; focus ring visible on every control
-- [ ] No page-level sideways scroll at 1280, 390 and 320 px on any screen
+- [x] No hex colours outside `globals.css`; no unstyled native control left (file input, select, date)
+- [x] Contrast of `muted`, `in`, `out` and `warn` text on their backgrounds is ≥ 4.5:1; focus ring visible on every control
+- [x] No page-level sideways scroll at 1280, 390 and 320 px on any screen
 
 **Verification:**
-- [ ] Checks pass; `npm run build` succeeds; `npm run test:e2e` passes
-- [ ] Visual check: full set of screenshots (4 screens, all states) at 1280 px and 390 px, plus 320 px for each screen; contrast ratios computed and listed in the report
+- [x] Checks pass; `npm run build` succeeds; `npm run test:e2e` passes
+- [x] Visual check: full set of screenshots (4 screens, all states) at 1280 px and 390 px, plus 320 px for each screen; contrast ratios computed and listed in the report
 
 **Dependencies:** Tasks 9-13
 
